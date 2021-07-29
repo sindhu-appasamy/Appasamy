@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<odoo>
+<!-- Tree view -->
+<record id="view_category_report" model="ir.ui.view">
+<field name="name">category.report.view</field>
+<field name="model">category.report</field>
+<field name="arch" type="xml">
+<tree string="Category Report" limit="80">
+<field name="partner_id"/>
+<field name="state_id"/>
+<field name="inv_date"/>
+<field name="invoice_ids" /> 
+<field name="product_id" />
+<field name="product_category_id"/>
+<field name="inv_total"/>
+<field name="payment_ids"/>
+<field name="payment_date"/>
+<field name="payment_amount"/>
+<field name="company_id" />
+</tree>
+</field>
+</record>
+
+<!--Pivot view -->
+<record id="pivot_category_report" model="ir.ui.view">
+<field name="name">category.report.pivot</field>
+<field name="model">category.report</field>
+<field name="arch" type="xml">
+<pivot string="Category Report" disable_linking="True">
+<field name="partner_id"/>
+<field name="state_id"/>
+<field name="inv_date"/>
+<field name="invoice_ids"/>
+<field name="product_id"/>
+<field name="product_category_id"/>
+<field name="inv_total"/>
+<field name="payment_ids"/>
+<field name="payment_date"/>
+<field name="payment_amount"/>
+</pivot>
+</field>
+</record>
+
+<!-- Tree search view & default filter -->
+<record id="search_category_report" model="ir.ui.view">
+<field name="name">category.report.search</field>
+<field name="model">category.report</field>
+<field name="arch" type="xml">
+<search string="Search Partner">
+<field name="invoice_ids" filter_domain="['|',('invoice_ids', 'ilike', self), ('partner_id', 'ilike', self)]"/>
+<field name="partner_id" filter_domain="[('partner_id', 'ilike', self)]"/>
+<field name="product_id" filter_domain="[('product_id', 'ilike', self)]"/>
+  <separator />
+    <filter string="Customer" name="partner_id" context="{'group_by':'partner_id'}"/>
+    <filter string="Order Category" name="product_category_id" context="{'group_by':'product_category_id'}"/>
+    <filter string="Invoice Date" name="inv_date" context="{'group_by':'inv_date'}"/>
+    <filter string="Payment Date" name="payment_date" context="{'group_by':'payment_date'}"/>
+    <filter string="Company" name="company_id" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+    <separator/>
+      <filter string="Payment Date" name="payment_date" date="payment_date"/>
+      <filter string="Invoice Date" name="inv_date" date="inv_date"/>
+    <separator/>
+</search>
+</field>
+</record>
+
+<!--Action for Category Report-->
+<record id="action_category_report" model="ir.actions.act_window">
+    <field name="name">Category Report</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">category.report</field>
+    <field name="view_mode">tree,pivot</field>
+    <field name="target">current</field>
+</record>
+<!--Menu for Category Report-->
+<menuitem id="category_report_menu" name="Category Report" action="action_category_report" parent="account.menu_finance_reports" sequence="2" groups="group_category_report"/>
+</odoo>
