@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'report-categorywise',
+    'name': 'Categorywise Report',
     'author': 'Sindhuja',
     'category': 'Accounting',
     'summary': 'Categorywise Report',
     'version': '13.0',
-    'depends': ['base','account'],
+    'depends': ['base','account','grn_report'],
     'data': [
-    'views/views.xml',
-    'security/ir.model.access.csv',
     'security/security.xml',
+    'security/ir.model.access.csv',
+    'views/views.xml',
     ],
     'installable': True,
     'application': False,
