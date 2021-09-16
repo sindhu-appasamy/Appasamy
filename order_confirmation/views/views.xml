@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<odoo>
+<!-- Tree view -->
+<record id="view_order_confirmation_report" model="ir.ui.view">
+<field name="name">order.confirmation.report.view</field>
+<field name="model">orderconfirmation.report</field>
+<field name="arch" type="xml">
+<tree string="Order Confirmation Report">
+<field name="company_id"/>
+<field name="source_document"/>
+<field name="reference_id"/>
+<field name="categ_id"/>
+<field name="product_id"/>
+<field name="product_qty"/>
+<field name="confirmation_date"/>
+<field name="partner_id"/>
+<field name="code"/>
+</tree>
+</field>
+</record>
+
+<!--Pivot view-->
+<record id="pivot_order_confirmation_report" model="ir.ui.view">
+<field name="name">order.confirmation.report.pivot</field>
+<field name="model">orderconfirmation.report</field>
+<field name="arch" type="xml">
+<pivot string="Order Confirmation Report">
+<field name="company_id"/>
+<field name="source_document"/>
+<field name="reference_id"/>
+<field name="categ_id"/>
+<field name="product_id"/>
+<field name="product_qty"/>
+<field name="confirmation_date"/>
+<field name="partner_id"/>
+<field name="code"/>
+</pivot>
+</field>
+</record>
+
+<!-- Tree search view & default filter -->
+<record id="search_order_confirmation_report" model="ir.ui.view">
+<field name="name">order.confimation.report.search</field>
+<field name="model">orderconfirmation.report</field>
+<field name="arch" type="xml">
+<search string="Search Partner">
+	<field name="partner_id" filter_domain="[('partner_id', 'ilike', self)]"/>
+	<field name="source_document" filter_domain="[('source_document', 'ilike', self)]"/>
+	<separator/>
+    <filter string="Date" name="confirmation_date" context="{'group_by':'confirmation_date'}"/>
+    <filter string="Order Number" name="source_document" context="{'group_by':'source_document'}"/>
+    <separator/>
+    <filter string="Date" name="confirmation_date" date="confirmation_date"/>
+    <filter string="Purchase" name="incoming" domain="[('code' , '=', 'incoming')]"/>
+    <filter string="Sale" name="outgoing" domain="[('code' , '=', 'outgoing')]"/>
+</search>
+</field>
+</record>
+
+<!--Action for Order Confirmation Report-->
+<record id="action_order_confirmation_report" model="ir.actions.act_window">
+    <field name="name">Order Confirmation Report</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">orderconfirmation.report</field>
+    <field name="view_mode">tree,pivot</field>
+    <field name="target">current</field>
+</record>
+<!--Menu for Order Confirmation Report-->
+<menuitem id="order_confirmation_report_menu" name="Order Confirmation Report" action="action_order_confirmation_report" parent="stock.menu_warehouse_report" sequence="160"/>
+</odoo>
