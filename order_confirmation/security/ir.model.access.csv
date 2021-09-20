@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_order_confirmation_report,access.order.confirmation.report,model_orderconfirmation_report,group_order_confirmation_report,1,1,1,1
+access_order_confirmation_report,access.order.confirmation.report,model_orderconfirmation_report,order_confirmation.group_order_confirmation_report,1,1,1,1
