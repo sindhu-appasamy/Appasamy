@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree view -->
+    <record id="view_purchase_detail" model="ir.ui.view">
+        <field name="name">purchase.detail.view</field>
+        <field name="model">purchase.detail</field>
+        <field name="arch" type="xml">
+            <tree string="Purchase Order Detail">
+                <field name="partner_id"/>
+                <field name="name"/>
+                <field name="order_date"/>
+                <field name="amount_untaxed"/>
+                <field name="amount_tax"/>
+                <field name="bill_qty"/>
+                <field name="grn_qty"/>
+                <field name="unbilled_qty"/>
+                <field name="state"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+    <!--Pivot view -->
+    <record id="pivot_category_report" model="ir.ui.view">
+        <field name="name">purchase.detail.pivot</field>
+        <field name="model">purchase.detail</field>
+        <field name="arch" type="xml">
+            <pivot string="Purchase Order Detail">
+                <field name="partner_id"/>
+                <field name="name"/>
+                <field name="order_date"/>
+                <field name="amount_untaxed"/>
+                <field name="amount_tax"/>
+                <field name="bill_qty"/>
+                <field name="grn_qty"/>
+                <field name="unbilled_qty"/>
+                <field name="state"/>
+                <field name="company_id"/>
+            </pivot>
+        </field>
+    </record>
+    <!--Action for Purchase order details-->
+    <record id="action_purchase_details" model="ir.actions.act_window">
+        <field name="name">Purchase Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.detail</field>
+        <field name="view_mode">tree,pivot</field>
+        <field name="target">current</field>
+    </record>
+    <!--Menu for Category Report-->
+    <menuitem id="purchase_details_report_menu" name="Purchase Details" action="action_purchase_details" parent="account.menu_finance_reports" sequence="27" groups="purchase_details.group_purchase_detail"/>
+</odoo>
