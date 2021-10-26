@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<odoo>
+  <!-- Tree view-->
+  <record id="view_daily_report" model="ir.ui.view">
+    <field name="name">daily.report.view</field>
+    <field name="model">daily.report</field>
+    <field name="arch" type="xml">
+      <tree string="Daily Report">
+        <field name="date" optional="hide"/>
+        <field name="date_of_transfer"/>
+        <field name="reference"/>
+        <!--<field name="picking_type_id"/>
+        <field name="location_id"/>
+        <field name="location_dest_id"/>-->
+        <field name="product_id"/>
+        <field name="categ_id"/>
+        <field name="production_qty" sum="Total Production"/>
+        <field name="today_production" sum="Today's Production" optional="show"/>
+        <field name="inward_qty" sum="Total Inward"/>
+        <field name="today_inward" sum="Today's Inward" optional="show"/>
+        <field name="outward_qty" sum="Total Outward"/>
+        <field name="today_outward" sum="Today's Outward" optional="show"/>
+        <field name="return_qty" sum="Total Return"/>
+        <field name="today_return" sum="Today's Return" optional="show"/>
+        <field name="pending_qty" sum="Total Pending"/>
+        <field name="state" optional="hide"/>
+        <field name="company_id" optional="hide"/>
+      </tree>
+    </field>
+  </record>
+  <!--Pivot view -->
+  <record id="pivot_daily_report" model="ir.ui.view">
+    <field name="name">daily.report.pivot</field>
+    <field name="model">daily.report</field>
+    <field name="arch" type="xml">
+      <pivot string="Daily Report">
+        <field name="date"/>
+        <field name="date_of_transfer"/>
+        <field name="reference"/>
+        <!--<field name="picking_type_id"/>
+        <field name="location_id"/>
+        <field name="location_dest_id"/>-->
+        <field name="product_id"/>
+        <field name="categ_id"/>
+        <field name="production_qty"/>
+        <field name="today_production"/>
+        <field name="inward_qty"/>
+        <field name="today_inward"/>
+        <field name="outward_qty"/>
+        <field name="today_outward"/>
+        <field name="return_qty"/>
+        <field name="today_return"/>
+        <field name="pending_qty"/>
+        <field name="company_id"/>
+        <field name="state"/>
+      </pivot>
+    </field>
+  </record>
+  <!-- Tree search view & default filter -->
+  <record id="search_daily_report" model="ir.ui.view">
+    <field name="name">daily.report.search</field>
+    <field name="model">daily.report</field>
+    <field name="arch" type="xml">
+      <search string="Search Product">
+        <field name="product_id" filter_domain="[('product_id', 'ilike', self)]"/>
+        <field name="reference" filter_domain="['|',('reference', 'ilike', self)]"/>
+        <separator />
+        <filter string="This Month" name="this_month" domain="[('date', '&gt;=', context_today().strftime('%%Y-%%m-01'))]"/>
+        <filter string="Product" name="product_id" context="{'group_by':'product_id'}"/>
+        <filter string="Company" name="company_id" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+        <separator/>
+        <filter string="Date" name="date" context="{'group_by':'date'}"/>
+        <separator/>
+        <filter string="Date" name="date" date="date"/>
+        <separator/>
+      </search>
+    </field>
+  </record>
+  <!--Action for Daily Report-->
+  <record id="action_daily_report" model="ir.actions.act_window">
+    <field name="name">Daily Report</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">daily.report</field>
+    <field name="view_mode">tree,pivot</field>
+    <field name="target">current</field>
+    <field name="context">{'search_default_this_month': 1}</field>
+  </record>
+  <!--Menu for Daily Report-->
+  <menuitem id="daily_report_menu" name="Daily Report" action="action_daily_report" parent="grn_report.appasamy_reports" sequence="30" groups= "group_daily_report"/>
+</odoo>
