@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_daily_report_export_form" model="ir.ui.view">
+        <field name="name">daily.report.export.form</field>
+        <field name="model">daily.report.export</field>
+        <field name="arch" type="xml">
+            <form string="Daily Report Export">
+                <group>
+                    <group>
+                        <field name="categ_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="pending_group_by"/>
+                    </group>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_print" string="Export To Excel" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_daily_report_export" model="ir.actions.act_window">
+        <field name="name">Daily Report</field>
+        <field name="res_model">daily.report.export</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_daily_report_export_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem name="Daily Report Export"
+        action="action_daily_report_export"
+        id="menu_action_daily_report_export"
+        parent="account.menu_finance_reports" sequence="50"/>
+
+</odoo>

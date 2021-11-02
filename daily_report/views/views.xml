@@ -6,7 +6,7 @@
     <field name="model">daily.report</field>
     <field name="arch" type="xml">
       <tree string="Daily Report">
-        <field name="date" optional="hide"/>
+        <!--field name="date" optional="hide"/-->
         <field name="date_of_transfer"/>
         <field name="reference"/>
         <!--<field name="picking_type_id"/>
@@ -23,7 +23,7 @@
         <field name="return_qty" sum="Total Return"/>
         <field name="today_return" sum="Today's Return" optional="show"/>
         <field name="pending_qty" sum="Total Pending"/>
-        <field name="state" optional="hide"/>
+        <field name="state"/>
         <field name="company_id" optional="hide"/>
       </tree>
     </field>
@@ -34,7 +34,7 @@
     <field name="model">daily.report</field>
     <field name="arch" type="xml">
       <pivot string="Daily Report">
-        <field name="date"/>
+        <!--field name="date"/-->
         <field name="date_of_transfer"/>
         <field name="reference"/>
         <!--<field name="picking_type_id"/>
@@ -63,15 +63,15 @@
     <field name="arch" type="xml">
       <search string="Search Product">
         <field name="product_id" filter_domain="[('product_id', 'ilike', self)]"/>
-        <field name="reference" filter_domain="['|',('reference', 'ilike', self)]"/>
+        <field name="reference" filter_domain="[('reference', 'ilike', self)]"/>
         <separator />
         <filter string="This Month" name="this_month" domain="[('date', '&gt;=', context_today().strftime('%%Y-%%m-01'))]"/>
         <filter string="Product" name="product_id" context="{'group_by':'product_id'}"/>
         <filter string="Company" name="company_id" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
         <separator/>
-        <filter string="Date" name="date" context="{'group_by':'date'}"/>
+        <filter string="Date of Transfer" name="date_of_transfer" context="{'group_by':'date_of_transfer'}"/>
         <separator/>
-        <filter string="Date" name="date" date="date"/>
+        <filter string="Date of Transfer" name="date_of_transfer" date="date_of_transfer"/>
         <separator/>
       </search>
     </field>
@@ -86,5 +86,5 @@
     <field name="context">{'search_default_this_month': 1}</field>
   </record>
   <!--Menu for Daily Report-->
-  <menuitem id="daily_report_menu" name="Daily Report" action="action_daily_report" parent="grn_report.appasamy_reports" sequence="30" groups= "group_daily_report"/>
+  <menuitem id="daily_report_menu" name="Daily Report" action="action_daily_report" parent="account.menu_finance_reports" sequence="30" groups= "group_daily_report"/>
 </odoo>

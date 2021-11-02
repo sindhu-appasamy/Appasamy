@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from odoo import fields, models, api, _
 from odoo import tools
 
@@ -10,8 +9,8 @@ class dailyreport(models.Model):
 
 	reference = fields.Char(string='Reference',readonly=1)
 	date = fields.Date(string='Date',readonly=1)
-	date_of_transfer = fields.Date(string='Date of Transfer',readonly=1)
-	picking_type_id = fields.Many2one('stock.picking.type',string="Operation Type",readonly=1)
+	date_of_transfer = fields.Date(string='Date of Transfer', readonly=1)
+	picking_type_id = fields.Many2one('stock.picking.type', string="Operation Type", readonly=1)
 	location_id = fields.Many2one('stock.location',string="Source Location",readonly=1)
 	location_dest_id = fields.Many2one('stock.location',string="Destination Location",readonly=1)
 	product_id = fields.Many2one('product.product',string='Product Name',readonly=1)
@@ -124,10 +123,8 @@ class dailyreport(models.Model):
 				LEFT JOIN stock_location as source_loc ON (sm.location_id = source_loc.id)
 				LEFT JOIN stock_location as dest_loc ON (sm.location_dest_id = dest_loc.id)
 			WHERE
-				 sm.state = 'done'
-			GROUP BY
-				sm.reference, sm.picking_type_id, sm.company_id, sm.date, sm.origin_returned_move_id, pt.categ_id, sm.product_id,
-				sm.product_uom_qty, sm.state, sm.location_id, sm.location_dest_id, dest_loc.usage, source_loc.usage,sm.sale_line_id
+				sm.state = 'done'
+				AND (dest_loc.usage != 'internal' OR source_loc.usage != 'internal')
 			UNION ALL
 			SELECT
 				Cast(NOW() as date),
@@ -158,27 +155,15 @@ class dailyreport(models.Model):
 			WHERE
 				sm.state NOT IN ('done', 'cancel') AND sm.sale_line_id IS NOT NULL 
 				AND dest_loc.usage != 'internal' AND source_loc.usage = 'internal'
-			GROUP BY
-				sm.reference, sm.picking_type_id, sm.company_id, sm.date, sm.origin_returned_move_id, pt.categ_id,
-				sm.product_id, sm.product_uom_qty, sm.state, sm.location_id, sm.location_dest_id, sm.sale_line_id
+			
 			) AS MAIN
 		"""
-
-	def _group_by(self):
-		return """
-			GROUP BY 
-			reference, picking_type_id, company_id, date, date_of_transfer, origin_returned_move_id, categ_id,product_id, state,location_id,
-			location_dest_id,main.production_qty, main.today_production, main.inward_qty, main.today_inward, main.outward_qty,
-			main.today_outward, main.return_qty, main.today_return, main.pending_qty
-		"""
-
 	def init(self):
 		tools.drop_view_if_exists(self._cr, self._table)
 		self.env.cr.execute("""
 			CREATE OR REPLACE VIEW %s As(
 			%s
 			%s
-			%s
 		)
-		"""% (self._table, self._select(), self._from(), self._group_by())
+		"""% (self._table, self._select(), self._from())
 		)
